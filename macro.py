@@ -1,40 +1,7 @@
 import pyautogui as pg
 import random
 import wx
-
-class command():
-    def r(self):
-        a = 5 * random.random()
-        return a
-    def ch1(self):
-        pg.click(50+self.r(),620+self.r(),2)
-    def ch2(self):
-        pg.click(130+self.r(),620+self.r(),2)
-    def ch3(self):
-        pg.click(210+self.r(),620+self.r(),2)
-    def ch4(self):
-        pg.click(290+self.r(),620+self.r(),2)
-    def skill1(self):
-        pg.click(155+self.r(),675+self.r(),2)
-    def skill2(self):
-        pg.click(242+self.r(),675+self.r(),2)
-    def skill3(self):
-        pg.click(325+self.r(),675+self.r(),2)
-    def skill4(self):
-        pg.click(409+self.r(),675+self.r(),2)
-    def back(self):
-        pg.click(50+self.r(),505+self.r(),2)
-    def auto(self):
-        pg.click(53+self.r(),533)
-    def attack(self):
-        pg.click(370+self.r(),500+self.r())
-
-    def event1(self):
-        self.ch1()
-        self.skill2()
-        self.skill3()
-        self.attack()
-        self.auto()
+import command
 
 #メイン画面
 class Frame(wx.MiniFrame):
@@ -73,20 +40,21 @@ class Main(wx.Panel):
         bottun2 = wx.Button(self,2,label="イベント1",size=CalSize(5),pos=CalPos(2,5))
         bottun3 = wx.Button(self,3,label="None",size=CalSize(5),pos=CalPos(3,5))
         bottun4 = wx.Button(self,4,label="None",size=CalSize(5),pos=CalPos(4,5))
-        bottun5 = wx.Button(self,5,label="終了",size=CalSize(5),pos=CalPos(5,5))
+        bottun5 = wx.Button(self,5,label="QUIT",size=CalSize(5),pos=CalPos(5,5))
         #ボタンイベント
         def MainButtonEvent(event):
             if event.GetId() == 1:
-                self.DestroyChildren()
-                panel = Daily(self)
+                parent.DestroyChildren()
+                panel = Daily(parent)
             elif event.GetId() == 2:
-                pass
+                parent.DestroyChildren()
+                panel = Event1(parent)
             elif event.GetId() == 3:
                 pass
             elif event.GetId() == 4:
                 pass
             elif event.GetId() == 5:
-                frame.Close()
+                parent.Close()
         #設定
         bottun3.Disable()
         bottun4.Disable()
@@ -133,14 +101,61 @@ class Daily(wx.Panel):
         #ボタンイベント
         def DailyButtonEvent(event):
             if event.GetId() == 1:
-                pass
+                command.daily1()
             elif event.GetId() == 2:
-                pass
+                command.daily2()
             elif event.GetId() == 3:
-                pass
+                command.daily3()
             elif event.GetId() == 4:
-                pass
+                command.daily4()
+            elif event.GetId() == 5:
+                command.daily5()
+            elif event.GetId() == 6:
+                command.daily6()
+            elif event.GetId() == 7:
+                command.daily7()
             elif event.GetId() == 8:
+                parent.DestroyChildren()
+                panel = Main(parent)
+        #設定
+        self.Bind(wx.EVT_BUTTON,DailyButtonEvent)
+    
+#イベント1画面
+class Event1(wx.Panel):
+    def __init__(self,parent):
+        super().__init__(parent,id=1,pos=(0,0),size=(482,75))
+        self.parent = parent
+        #レイアウト導出関数
+        x = 481
+        y = 73
+        margin = 3
+        def CalPos(id,number):
+            xp = x-margin
+            xp = (xp/number)*(id-1)+margin
+            yp = margin
+            return xp,yp
+        def CalSize(number):
+            xsize = (x-(margin*(number+1)))/number
+            ysize = y-(margin*2)
+            return xsize,ysize
+        #レイアウト
+        self.SetBackgroundColour((255,255,255))        
+        bottun1 = wx.Button(self,1,label="A",size=CalSize(5),pos=CalPos(1,5))
+        bottun2 = wx.Button(self,2,label="B",size=CalSize(5),pos=CalPos(2,5))
+        bottun3 = wx.Button(self,3,label="C",size=CalSize(5),pos=CalPos(3,5))
+        bottun4 = wx.Button(self,4,label="D",size=CalSize(5),pos=CalPos(4,5))
+        bottun5 = wx.Button(self,5,label="Back",size=CalSize(5),pos=CalPos(5,5))
+        #ボタンイベント
+        def DailyButtonEvent(event):
+            if event.GetId() == 1:
+                command.event1()
+            elif event.GetId() == 2:
+                command.event2()
+            elif event.GetId() == 3:
+                command.event3()
+            elif event.GetId() == 4:
+                command.event4()
+            elif event.GetId() == 5:
                 parent.DestroyChildren()
                 panel = Main(parent)
         #設定
